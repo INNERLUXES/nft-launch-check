@@ -1,0 +1,418 @@
+{
+  "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "nft-launch-check",
+          "version": "1.0.0",
+          "informationUri": "https://github.com/INNERLUXES/nft-launch-check",
+          "rules": [
+            {
+              "id": "file-unreadable",
+              "name": "file-unreadable",
+              "shortDescription": {
+                "text": "the plan is not JSON the reader can follow, or its top level is not an object, so nothing in it was read"
+              },
+              "help": {
+                "text": "Write the launch plan as one JSON object (docs/inputs.md); fix the line named. (input)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "input"
+              }
+            },
+            {
+              "id": "field-missing",
+              "name": "field-missing",
+              "shortDescription": {
+                "text": "a field the checks need is not in the plan: a part of it, the name, standard or max supply of the collection, the timing or the phases of the mint, the name, start, end, price or currency of a phase, the size of an allow list, the reveal method or the placeholder of a delayed reveal, the freeze plan, the owner, or the withdraw address"
+              },
+              "help": {
+                "text": "Add the field named; docs/inputs.md lists what the plan needs. (input)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "input"
+              }
+            },
+            {
+              "id": "field-unknown",
+              "name": "field-unknown",
+              "shortDescription": {
+                "text": "a key the tool does not read, often a misspelt one; its value was left out of every check"
+              },
+              "help": {
+                "text": "Correct the spelling to a field of docs/inputs.md, or remove it. (input)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "input"
+              }
+            },
+            {
+              "id": "field-invalid",
+              "name": "field-invalid",
+              "shortDescription": {
+                "text": "a value of the wrong type or form: text where a whole number belongs, a price that is not a plain decimal of 0 or more, a standard, timing, reveal method or freeze plan the tool does not know, a hash that is not 64 hex digits, a placeholder that is not a URI, or a freeze at mint next to a delayed reveal"
+              },
+              "help": {
+                "text": "Write the value as docs/inputs.md shows: text for names, addresses and choices, whole numbers for supplies, limits, starts and ends, plain decimal numbers for prices, true or false for flags. (input)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "input"
+              }
+            },
+            {
+              "id": "field-duplicate",
+              "name": "field-duplicate",
+              "shortDescription": {
+                "text": "two phases share a name (compared without case and outer spaces), or a signer of the multisig is listed twice, so a reader of the plan cannot tell them apart"
+              },
+              "help": {
+                "text": "Give every phase a name of its own, and list each signer once. (input)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "input"
+              }
+            },
+            {
+              "id": "secret-in-file",
+              "name": "secret-in-file",
+              "shortDescription": {
+                "text": "the plan holds a private key, a seed or a mnemonic, under a key named for one or as a value shaped like one; the tool never reads it and never shows it"
+              },
+              "help": {
+                "text": "Remove the value from the plan and from wherever the plan was copied, treat it as exposed and move what it controls to a new key. A launch plan names wallets by their public address only. (input)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "input"
+              }
+            },
+            {
+              "id": "supply-exceeded",
+              "name": "supply-exceeded",
+              "shortDescription": {
+                "text": "the supply caps of the phases and the reserve for the team add up to more than the max supply, or the reserve alone is above it"
+              },
+              "help": {
+                "text": "Lower the caps of the phases or the reserve until they fit in the max supply, or raise the max supply if the contract and the plan of the collection allow it. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "phase-empty",
+              "name": "phase-empty",
+              "shortDescription": {
+                "text": "a phase ends at or before its start, so it is open for no minute or block"
+              },
+              "help": {
+                "text": "Set the end of the phase after its start, in the timing of the plan. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "phase-overlap",
+              "name": "phase-overlap",
+              "shortDescription": {
+                "text": "two phases are open at the same time, so a wallet may mint in both, and the price and the limit it meets depend on which it calls"
+              },
+              "help": {
+                "text": "Start each phase when the one before it ends, or say in the plan why two phases share a window. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "allowlist-root-missing",
+              "name": "allowlist-root-missing",
+              "shortDescription": {
+                "text": "a phase with an allow list has no merkle root, or a root of zeros, so the contract cannot tell a listed wallet from any other"
+              },
+              "help": {
+                "text": "Build the merkle tree of the allow list and set its root in the plan before the phase opens; if the contract checks a signature instead of a root, say so in the notes of the phase and keep the finding in the review. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "allowlist-oversubscribed",
+              "name": "allowlist-oversubscribed",
+              "shortDescription": {
+                "text": "the wallets of an allow list times the per-wallet limit come to more than the supply cap of its phase, so some listed wallets may find the phase sold out"
+              },
+              "help": {
+                "text": "Raise the supply cap of the phase, lower the per-wallet limit or the size of the list, or tell the listed wallets that a place on the list does not hold a token. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "public-phase-unlimited",
+              "name": "public-phase-unlimited",
+              "shortDescription": {
+                "text": "a phase with no allow list has no per-wallet limit, so one wallet or a set of bots can mint as much of it as it can pay for; a free phase says so"
+              },
+              "help": {
+                "text": "Set perWalletLimit on every public phase, above all on a free or cheap one, and keep in mind that a limit per wallet does not stop one person with many wallets. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "royalty-invalid",
+              "name": "royalty-invalid",
+              "shortDescription": {
+                "text": "the royalty is not a whole number of basis points from 0 to 10000: below 0, with a fraction, or above 10000, which would be more than the whole sale price"
+              },
+              "help": {
+                "text": "Write the royalty in basis points, a whole number from 0 to 10000, where 100 is 1% and 10000 the whole price; 5% is 500. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "royalty-receiver-missing",
+              "name": "royalty-receiver-missing",
+              "shortDescription": {
+                "text": "the plan sets a royalty above 0 but names no receiver, though the royaltyInfo of ERC-2981 answers with the address the royalty is sent to"
+              },
+              "help": {
+                "text": "Name the receiver of the royalty, such as the multisig of the team or a contract that splits it, or set the royalty to 0. (documented)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "documented"
+              }
+            },
+            {
+              "id": "royalty-high",
+              "name": "royalty-high",
+              "shortDescription": {
+                "text": "the royalty is above the threshold of --max-royalty-bps (1000 basis points, 10%, by default)"
+              },
+              "help": {
+                "text": "Check the royalty against what the marketplaces the collection sells on honour and what its buyers expect, or raise --max-royalty-bps for a collection that sets a higher royalty on purpose. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "reveal-provenance-missing",
+              "name": "reveal-provenance-missing",
+              "shortDescription": {
+                "text": "a delayed reveal has no provenance hash, so collectors cannot check that the order of the art was fixed before the mint"
+              },
+              "help": {
+                "text": "Hash the final metadata or images in their order, publish the hash before the mint opens and set it in the plan as provenanceHash. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "metadata-update-event-missing",
+              "name": "metadata-update-event-missing",
+              "shortDescription": {
+                "text": "an ERC-721 collection whose metadata changes after the mint (a delayed reveal, or a freeze after the reveal or never) does not plan the events of ERC-4906, so marketplaces may keep showing the placeholder"
+              },
+              "help": {
+                "text": "Add the ERC-4906 extension to the contract, emit BatchMetadataUpdate at the reveal and MetadataUpdate on each later change, and set metadata.erc4906 to true. (documented)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "documented"
+              }
+            },
+            {
+              "id": "metadata-freeze-missing",
+              "name": "metadata-freeze-missing",
+              "shortDescription": {
+                "text": "the plan never freezes the metadata, so the owner can change the art and the traits of every token after the sale"
+              },
+              "help": {
+                "text": "Plan a freeze, at the mint or after the reveal, that makes the metadata permanent, or say to collectors that the metadata stays open to change and why. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "admin-single-key",
+              "name": "admin-single-key",
+              "shortDescription": {
+                "text": "the owner of the contract or the withdraw address is not the multisig of the plan, so one key can change the contract or receive the proceeds of the mint"
+              },
+              "help": {
+                "text": "Make the owner and the withdraw address a multisig wallet that needs more than one signer, and set it in admin.multisig. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "multisig-threshold-low",
+              "name": "multisig-threshold-low",
+              "shortDescription": {
+                "text": "the multisig needs only one signature, so any one of its signers acts alone"
+              },
+              "help": {
+                "text": "Set the threshold to at least 2, and to a majority of the signers for the owner of the contract. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "multisig-threshold-unreachable",
+              "name": "multisig-threshold-unreachable",
+              "shortDescription": {
+                "text": "the threshold of the multisig is above the number of its signers, so it can never act"
+              },
+              "help": {
+                "text": "Lower the threshold to the number of signers or fewer, or add the missing signers. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "address-malformed",
+              "name": "address-malformed",
+              "shortDescription": {
+                "text": "an address of the owner, the minter, the multisig or a signer, the royalty receiver or the withdraw address that is not in the form of its chain (0x and 40 hex digits for ERC-721 and ERC-1155, 32 to 44 base58 characters for Solana), or is the zero address"
+              },
+              "help": {
+                "text": "Copy the address again from the wallet; send nothing to a zero address, which no one holds. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "currency-mismatch",
+              "name": "currency-mismatch",
+              "shortDescription": {
+                "text": "the currency of a phase belongs to another chain than the standard of the collection, such as SOL for an ERC-721 or ETH for Solana"
+              },
+              "help": {
+                "text": "Price the phase in a currency of the chain of the collection, or correct the standard. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            },
+            {
+              "id": "link-invalid",
+              "name": "link-invalid",
+              "shortDescription": {
+                "text": "a link of the plan is not an https address with a host, or carries a user name or a password"
+              },
+              "help": {
+                "text": "Write each link as https:// and the host and path of the page; the tool never opens it. (best practice)"
+              },
+              "defaultConfiguration": {
+                "level": "warning"
+              },
+              "properties": {
+                "kind": "best practice"
+              }
+            }
+          ]
+        }
+      },
+      "artifacts": [
+        {
+          "location": {
+            "uri": "examples/good/plan.json"
+          }
+        }
+      ],
+      "results": [],
+      "properties": {
+        "notice": "This report is an input to a review of the launch plan before the mint goes live: not legal or financial advice, not an audit of the contract and not a guarantee that the mint will go as planned.",
+        "result": "PASS - no finding at or above error",
+        "sources": [
+          "https://eips.ethereum.org/EIPS/eip-2981",
+          "https://eips.ethereum.org/EIPS/eip-4906",
+          "https://eips.ethereum.org/EIPS/eip-721"
+        ]
+      }
+    }
+  ]
+}

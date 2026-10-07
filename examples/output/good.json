@@ -1,0 +1,240 @@
+{
+  "tool": "nft-launch-check",
+  "version": "1.0.0",
+  "input": {
+    "file": "examples/good/plan.json",
+    "format": "json",
+    "bytes": 1762,
+    "lines": 22
+  },
+  "plan": {
+    "collection": {
+      "name": "Meadow Example Foxes",
+      "symbol": "MEF",
+      "standard": "ERC-721",
+      "maxSupply": 3000,
+      "reserve": 100
+    },
+    "mint": {
+      "timing": "blocks",
+      "phases": 2,
+      "capped": 2900,
+      "uncapped": 0
+    },
+    "royalty": {
+      "bps": 500,
+      "percent": "5%",
+      "receiver": "0x9999999999999999999999999999999999999999"
+    },
+    "reveal": {
+      "method": "delayed",
+      "placeholder": true,
+      "provenanceHash": true
+    },
+    "metadata": {
+      "freeze": "after-reveal",
+      "erc4906": true
+    },
+    "admin": {
+      "owner": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "minter": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "multisig": {
+        "address": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "threshold": 2,
+        "signers": 3
+      }
+    },
+    "withdraw": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "links": 3
+  },
+  "totals": {
+    "findings": 0,
+    "byLevel": {
+      "error": 0,
+      "warning": 0,
+      "info": 0
+    },
+    "hidden": 0
+  },
+  "rules": [
+    {
+      "id": "file-unreadable",
+      "level": "error",
+      "kind": "input",
+      "findings": 0
+    },
+    {
+      "id": "field-missing",
+      "level": "error",
+      "kind": "input",
+      "findings": 0
+    },
+    {
+      "id": "field-unknown",
+      "level": "warning",
+      "kind": "input",
+      "findings": 0
+    },
+    {
+      "id": "field-invalid",
+      "level": "error",
+      "kind": "input",
+      "findings": 0
+    },
+    {
+      "id": "field-duplicate",
+      "level": "error",
+      "kind": "input",
+      "findings": 0
+    },
+    {
+      "id": "secret-in-file",
+      "level": "error",
+      "kind": "input",
+      "findings": 0
+    },
+    {
+      "id": "supply-exceeded",
+      "level": "error",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "phase-empty",
+      "level": "error",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "phase-overlap",
+      "level": "warning",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "allowlist-root-missing",
+      "level": "error",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "allowlist-oversubscribed",
+      "level": "warning",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "public-phase-unlimited",
+      "level": "warning",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "royalty-invalid",
+      "level": "error",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "royalty-receiver-missing",
+      "level": "error",
+      "kind": "documented",
+      "findings": 0
+    },
+    {
+      "id": "royalty-high",
+      "level": "warning",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "reveal-provenance-missing",
+      "level": "warning",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "metadata-update-event-missing",
+      "level": "warning",
+      "kind": "documented",
+      "findings": 0
+    },
+    {
+      "id": "metadata-freeze-missing",
+      "level": "warning",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "admin-single-key",
+      "level": "warning",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "multisig-threshold-low",
+      "level": "warning",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "multisig-threshold-unreachable",
+      "level": "error",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "address-malformed",
+      "level": "error",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "currency-mismatch",
+      "level": "error",
+      "kind": "best practice",
+      "findings": 0
+    },
+    {
+      "id": "link-invalid",
+      "level": "warning",
+      "kind": "best practice",
+      "findings": 0
+    }
+  ],
+  "config": {
+    "minSeverity": "info",
+    "failOn": "error",
+    "maxRoyaltyBps": 1000
+  },
+  "findings": [],
+  "phases": [
+    {
+      "name": "allowlist",
+      "start": 100,
+      "end": 7300,
+      "price": "0.03 ETH",
+      "perWallet": 2,
+      "cap": 1200,
+      "allowList": 600,
+      "merkleRoot": "set"
+    },
+    {
+      "name": "public",
+      "start": 7300,
+      "end": 14500,
+      "price": "0.05 ETH",
+      "perWallet": 5,
+      "cap": 1700,
+      "allowList": null,
+      "merkleRoot": null
+    }
+  ],
+  "notes": [],
+  "notice": "This report is an input to a review of the launch plan before the mint goes live: not legal or financial advice, not an audit of the contract and not a guarantee that the mint will go as planned.",
+  "result": {
+    "pass": true,
+    "failOn": "error",
+    "text": "PASS - no finding at or above error"
+  }
+}

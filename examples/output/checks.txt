@@ -1,0 +1,28 @@
+nft-launch-check checks
+
+  file-unreadable                 error    input          the plan is not JSON the reader can follow, or its top level is not an object, so nothing in it was read
+  field-missing                   error    input          a field the checks need is not in the plan: a part of it, the name, standard or max supply of the collection, the timing or the phases of the mint, the name, start, end, price or currency of a phase, the size of an allow list, the reveal method or the placeholder of a delayed reveal, the freeze plan, the owner, or the withdraw address
+  field-unknown                   warning  input          a key the tool does not read, often a misspelt one; its value was left out of every check
+  field-invalid                   error    input          a value of the wrong type or form: text where a whole number belongs, a price that is not a plain decimal of 0 or more, a standard, timing, reveal method or freeze plan the tool does not know, a hash that is not 64 hex digits, a placeholder that is not a URI, or a freeze at mint next to a delayed reveal
+  field-duplicate                 error    input          two phases share a name (compared without case and outer spaces), or a signer of the multisig is listed twice, so a reader of the plan cannot tell them apart
+  secret-in-file                  error    input          the plan holds a private key, a seed or a mnemonic, under a key named for one or as a value shaped like one; the tool never reads it and never shows it
+  supply-exceeded                 error    best practice  the supply caps of the phases and the reserve for the team add up to more than the max supply, or the reserve alone is above it
+  phase-empty                     error    best practice  a phase ends at or before its start, so it is open for no minute or block
+  phase-overlap                   warning  best practice  two phases are open at the same time, so a wallet may mint in both, and the price and the limit it meets depend on which it calls
+  allowlist-root-missing          error    best practice  a phase with an allow list has no merkle root, or a root of zeros, so the contract cannot tell a listed wallet from any other
+  allowlist-oversubscribed        warning  best practice  the wallets of an allow list times the per-wallet limit come to more than the supply cap of its phase, so some listed wallets may find the phase sold out
+  public-phase-unlimited          warning  best practice  a phase with no allow list has no per-wallet limit, so one wallet or a set of bots can mint as much of it as it can pay for; a free phase says so
+  royalty-invalid                 error    best practice  the royalty is not a whole number of basis points from 0 to 10000: below 0, with a fraction, or above 10000, which would be more than the whole sale price
+  royalty-receiver-missing        error    documented     the plan sets a royalty above 0 but names no receiver, though the royaltyInfo of ERC-2981 answers with the address the royalty is sent to
+  royalty-high                    warning  best practice  the royalty is above the threshold of --max-royalty-bps (1000 basis points, 10%, by default)
+  reveal-provenance-missing       warning  best practice  a delayed reveal has no provenance hash, so collectors cannot check that the order of the art was fixed before the mint
+  metadata-update-event-missing   warning  documented     an ERC-721 collection whose metadata changes after the mint (a delayed reveal, or a freeze after the reveal or never) does not plan the events of ERC-4906, so marketplaces may keep showing the placeholder
+  metadata-freeze-missing         warning  best practice  the plan never freezes the metadata, so the owner can change the art and the traits of every token after the sale
+  admin-single-key                warning  best practice  the owner of the contract or the withdraw address is not the multisig of the plan, so one key can change the contract or receive the proceeds of the mint
+  multisig-threshold-low          warning  best practice  the multisig needs only one signature, so any one of its signers acts alone
+  multisig-threshold-unreachable  error    best practice  the threshold of the multisig is above the number of its signers, so it can never act
+  address-malformed               error    best practice  an address of the owner, the minter, the multisig or a signer, the royalty receiver or the withdraw address that is not in the form of its chain (0x and 40 hex digits for ERC-721 and ERC-1155, 32 to 44 base58 characters for Solana), or is the zero address
+  currency-mismatch               error    best practice  the currency of a phase belongs to another chain than the standard of the collection, such as SOL for an ERC-721 or ETH for Solana
+  link-invalid                    warning  best practice  a link of the plan is not an https address with a host, or carries a user name or a password
+
+A documented check rests on ERC-2981, ERC-4906 and ERC-721; a best practice check is this tool's own choice and says so in its message. An input check is about the file itself. None of it is legal or financial advice.

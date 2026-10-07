@@ -1,0 +1,24 @@
+{
+  "notes": "Made-up launch plan for the examples of nft-launch-check: every name and address is made up, and nothing here is legal or financial advice.",
+  "collection": { "name": "Harbor Example Owls", "symbol": "HXO", "standard": "ERC-721", "maxSupply": 5000, "reserve": 300 },
+  "mint": {
+    "timing": "minutes",
+    "phases": [
+      { "name": "allowlist", "start": 0, "end": 1440, "price": "0.04", "currency": "ETH", "perWalletLimt": 2, "supplyCap": 1000, "allowList": { "size": 1500 } },
+      { "name": "public", "start": 1200, "end": 4320, "price": "0", "currency": "ETH", "supplyCap": 3800 },
+      { "name": "holders", "start": 4320, "end": 4320, "price": "0.03", "currency": "SOL", "perWalletLimit": 1, "supplyCap": 300, "allowList": { "size": 200, "merkleRoot": "0x7777777777777777777777777777777777777777777777777777777777777777" } },
+      { "name": "PUBLIC", "start": 4320, "end": 5760, "price": "0.05", "perWalletLimit": 3, "supplyCap": 200 }
+    ]
+  },
+  "royalty": { "bps": 1250 },
+  "reveal": { "method": "delayed", "placeholderUri": "placeholder.json" },
+  "metadata": { "freeze": "never", "erc4906": false },
+  "admin": {
+    "owner": "0x1111111111111111111111111111111111111111",
+    "minter": "0x12345",
+    "seedPhrase": "lantern lantern lantern lantern lantern lantern lantern lantern lantern lantern lantern lantern",
+    "multisig": { "address": "0x5555555555555555555555555555555555555555", "threshold": 1, "signers": ["0x6666666666666666666666666666666666666666", "0x7777777777777777777777777777777777777777", "0x6666666666666666666666666666666666666666"] }
+  },
+  "withdraw": { "address": "0x0000000000000000000000000000000000000000" },
+  "links": { "website": "http://harbor-owls.example", "x": "https://x.example/harborowls" }
+}

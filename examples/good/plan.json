@@ -1,0 +1,22 @@
+{
+  "notes": "Made-up launch plan for the examples of nft-launch-check: every name and address is made up, and nothing here is legal or financial advice.",
+  "collection": { "name": "Meadow Example Foxes", "symbol": "MEF", "standard": "ERC-721", "maxSupply": 3000, "reserve": 100 },
+  "mint": {
+    "timing": "blocks",
+    "notes": "Starts and ends are block numbers of the made-up chain of the example.",
+    "phases": [
+      { "name": "allowlist", "start": 100, "end": 7300, "price": "0.03", "currency": "ETH", "perWalletLimit": 2, "supplyCap": 1200, "allowList": { "size": 600, "merkleRoot": "0x8888888888888888888888888888888888888888888888888888888888888888" } },
+      { "name": "public", "start": 7300, "end": 14500, "price": "0.05", "currency": "ETH", "perWalletLimit": 5, "supplyCap": 1700 }
+    ]
+  },
+  "royalty": { "bps": 500, "receiver": "0x9999999999999999999999999999999999999999" },
+  "reveal": { "method": "delayed", "placeholderUri": "ipfs://bafyexampleplaceholdermeadowfoxes/hidden.json", "provenanceHash": "0x4444444444444444444444444444444444444444444444444444444444444444" },
+  "metadata": { "freeze": "after-reveal", "erc4906": true },
+  "admin": {
+    "owner": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "minter": "0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "multisig": { "address": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "threshold": 2, "signers": ["0xcccccccccccccccccccccccccccccccccccccccc", "0xdddddddddddddddddddddddddddddddddddddddd", "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"] }
+  },
+  "withdraw": { "address": "0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" },
+  "links": { "website": "https://meadow-foxes.example", "x": "https://x.example/meadowfoxes", "discord": "https://discord.example/meadowfoxes" }
+}

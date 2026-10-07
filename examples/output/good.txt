@@ -1,0 +1,52 @@
+nft-launch-check: examples/good/plan.json
+file: examples/good/plan.json (JSON, 22 lines, 1,762 bytes)
+collection: Meadow Example Foxes (MEF); ERC-721; max supply 3,000; reserve 100
+mint: 2 phases timed in blocks; supply caps add up to 2,900
+royalty: 500 basis points (5%); to 0x9999999999999999999999999999999999999999
+reveal: delayed; placeholder set; provenance hash set
+metadata: freeze after-reveal; ERC-4906 events planned
+admin: owner 0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa; multisig 0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa, 2 of 3 signers
+withdraw: 0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+findings: 0
+
+Checks (24)
+
+  check                           level    kind           findings
+  file-unreadable                 error    input          0
+  field-missing                   error    input          0
+  field-unknown                   warning  input          0
+  field-invalid                   error    input          0
+  field-duplicate                 error    input          0
+  secret-in-file                  error    input          0
+  supply-exceeded                 error    best practice  0
+  phase-empty                     error    best practice  0
+  phase-overlap                   warning  best practice  0
+  allowlist-root-missing          error    best practice  0
+  allowlist-oversubscribed        warning  best practice  0
+  public-phase-unlimited          warning  best practice  0
+  royalty-invalid                 error    best practice  0
+  royalty-receiver-missing        error    documented     0
+  royalty-high                    warning  best practice  0
+  reveal-provenance-missing       warning  best practice  0
+  metadata-update-event-missing   warning  documented     0
+  metadata-freeze-missing         warning  best practice  0
+  admin-single-key                warning  best practice  0
+  multisig-threshold-low          warning  best practice  0
+  multisig-threshold-unreachable  error    best practice  0
+  address-malformed               error    best practice  0
+  currency-mismatch               error    best practice  0
+  link-invalid                    warning  best practice  0
+
+Findings (0)
+
+  none
+
+Phases (2)
+
+  phase      start  end     price     per wallet  cap    allow list  merkle root
+  allowlist  100    7,300   0.03 ETH  2           1,200  600         set
+  public     7,300  14,500  0.05 ETH  5           1,700  -           -
+
+This report is an input to a review of the launch plan before the mint goes live: not legal or financial advice, not an audit of the contract and not a guarantee that the mint will go as planned.
+
+RESULT: PASS - no finding at or above error
