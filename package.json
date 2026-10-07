@@ -1,0 +1,51 @@
+{
+  "name": "nft-launch-check",
+  "version": "1.0.0",
+  "description": "NFT launch check: reads the launch plan of an NFT collection as JSON before the mint goes live (the collection with its name, standard and max supply, the reserve for the team, the mint phases with their start and end in minutes or blocks, price, currency, per-wallet limit, supply cap and allow list with its size and merkle root, the royalty in basis points and its receiver, the reveal with its placeholder and provenance hash, the metadata freeze plan, the owner, the minter and the multisig with its threshold and signers, the withdraw address and the links), contacts no chain, fetches nothing, runs nothing and reads no clock, and lists with its line every mistake of the plan an NFT consultant would catch: phase caps and reserve above the max supply, phases that overlap or are empty, an allow list with no merkle root or more wallets than its phase holds, a public phase with no per-wallet limit, a royalty that is not 0 to 10000 basis points, above a threshold or with no receiver (ERC-2981), a delayed reveal with no provenance hash, an ERC-721 whose metadata change with no ERC-4906 events, metadata never frozen, an owner or withdraw address held by one key, a multisig threshold of 1 or above its signers, malformed or zero addresses, a currency of another chain and links that are not https. Not legal or financial advice. Text, markdown, JSON and SARIF output, exit codes for a pipeline, no dependencies.",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "bin": {
+    "nft-launch-check": "bin/nft-launch-check.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "docs",
+    "examples",
+    "research",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.js\"",
+    "test:coverage": "node --test --experimental-test-coverage \"test/*.test.js\"",
+    "check": "node tools/check.mjs",
+    "example": "node tools/example.mjs"
+  },
+  "keywords": [
+    "nft",
+    "nft-launch",
+    "erc-2981",
+    "erc-4906",
+    "erc-721",
+    "royalties",
+    "mint",
+    "allowlist",
+    "static-analysis",
+    "sarif",
+    "cli"
+  ],
+  "author": "INNERLUXES <info@innerluxes.dev>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/INNERLUXES/nft-launch-check.git"
+  },
+  "homepage": "https://innerluxes.dev/blockchain/nft-consulting"
+}
